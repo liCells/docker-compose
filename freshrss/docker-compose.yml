@@ -1,0 +1,68 @@
+services:
+  freshrss:
+    image: freshrss/freshrss:latest
+    container_name: freshrss
+    network_mode: host
+    logging:
+      options:
+        max-size: 10m
+    environment:
+      - TZ=Asia/Shanghai
+      - LISTEN=0.0.0.0:8082
+      - CRON_MIN=5,40
+      #- https_proxy=http://127.0.0.1:7890
+      #- http_proxy=http://127.0.0.1:7890
+      #- no_proxy=localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+    volumes:
+      - ./data:/var/www/FreshRSS/data
+      - ./extensions:/var/www/FreshRSS/extensions
+    restart: unless-stopped
+
+  rsshub:
+    # image: diygod/rsshub
+    image: diygod/rsshub:chromium-bundled
+    restart: always
+    ports:
+      - "1200:1200"
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: "redis://redis:6379/"
+      PUPPETEER_WS_ENDPOINT: "ws://browserless:3000" # marked
+      YOUTUBE_KEY: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx_x"
+      BILIBILI_COOKIE_xxxxxxxxx: "xxxxxxxxxxxxxxxxx"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:1200/healthz" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - redis
+      - browserless
+
+  browserless:
+    image: browserless/chrome
+    restart: always
+    ulimits:
+      core:
+        hard: 0
+        soft: 0
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/pressure" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - ./redis-data:/data
+    command: ["redis-server", "--ignore-warnings", "ARM64-COW-BUG"]
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+

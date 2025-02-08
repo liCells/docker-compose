@@ -1,0 +1,30 @@
+services:
+  n8n:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: n8n:v1.0
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "35678:5678"
+    environment:
+      # .............................. SQLite...
+      DB_TYPE: "sqlite"
+      DB_SQLITE_PATH: "/home/node/.n8n/database.sqlite"
+      # ..........................................
+      N8N_ENCRYPTION_KEY: "xxxx"
+      # ..............................
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: "xx"
+      N8N_BASIC_AUTH_PASSWORD: "xxxxxxxxxx"
+      WEBHOOK_URL: "https://xxx.xxxxxxxx.xxx/"
+      N8N_SECURE_COOKIE: "false"
+      EXECUTIONS_DATA_PRUNE: "true"
+      EXECUTIONS_DATA_MAX_AGE: "72"
+      EXECUTIONS_DATA_PRUNE_MAX_COUNT: "1000"
+    volumes:
+      - ./data:/home/node/.n8n
+      # 可以使用 Cookie Editor 浏览器插件导出
+      - ./cookies:/mnt/cookies
+

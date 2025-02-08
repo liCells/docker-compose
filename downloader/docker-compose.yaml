@@ -1,0 +1,40 @@
+services:
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=100
+      - TZ=Asia/Shanghai # 时区
+      - UMASK_SET=022
+      - WEBUI_PORT=38081 # WEB 端口 
+    volumes:
+      - ./config/qb:/config # 绝对路径 修改为config文件夹
+      - ~/Downloads:/downloads # 绝对路径 修改为downloads文件夹
+    ports:
+      # 要使用的映射下载端口与内部下载端口，可保持默认，安装完成后在管理页面仍然可以改成其他端口。
+      - 36881:6881 
+      - 36881:6881/udp
+      # 此处WEB UI 目标端口与内部端口务必保证相同，见问题1
+      - 38081:38081
+    restart: unless-stopped
+
+  aria2:
+    image: p3terx/aria2-pro
+    container_name: aria2
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=100
+      - UMASK_SET=022
+      - RPC_SECRET=xxxx
+      - RPC_PORT=6800
+      - LISTEN_PORT=6888
+    ports:
+      - "36800:6800"
+      - "36888:6888"
+      - "36888:6888/udp"
+    volumes:
+      - ./config/aria2:/config
+      - ~/Downloads/:/downloads
+
