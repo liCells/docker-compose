@@ -1,0 +1,49 @@
+- name: Start Page
+  width: slim
+  hide-desktop-navigation: true
+  center-vertically: true
+  columns:
+    - size: full
+      widgets:
+        - type: monitor
+          cache: 30m
+          title: Services
+          sites:
+            - title: AI
+              url: http://10.0.0.10:33000/
+              icon: si:openai
+            - title: Note
+              url: https://xxxx.xxxxxxxx.xxx/
+              check-url: http://10.0.0.10:35230/
+              icon: /assets/memos.png
+            - title: workflow
+              url: https://xxx.xxxxxxxx.xxx/
+              check-url: http://10.0.0.10:35678/
+              icon: si:n8n
+            - title: Router
+              url: http://10.0.0.1/cgi-bin/luci/
+              icon: si:openwrt
+              alt-status-codes:
+                - 403
+            - title: FreshRSS
+              url: http://10.0.0.1:8082/
+              icon: /assets/freshrss.svg
+            - title: Dozzle
+              url: http://10.0.0.10:30010/
+              icon: /assets/dozzle.svg
+            - title: Spotify Dashboard
+              url: http://10.0.0.10:31111/
+              icon: si:spotify
+
+        - type: bookmarks
+          groups:
+            - title: General
+              links:
+                - title: Gmail
+                  url: https://mail.google.com/mail/u/0/
+                - title: GitHub
+                  url: https://github.com/
+            - title: Entertainment
+              links:
+                - title: YouTube
+                  url: https://www.youtube.com/

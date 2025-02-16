@@ -1,0 +1,9 @@
+services:
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle@sha256:0891fe164191875c34cb0d64cab8d6106cdd58f186df2f7e5d7e5b8be65f9f25
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 30010:8080
+    restart: unless-stopped

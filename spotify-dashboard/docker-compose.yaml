@@ -1,0 +1,31 @@
+services:
+  server:
+    image: yooooomi/your_spotify_server
+    restart: unless-stopped
+    ports:
+      - "31110:8080"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    environment:
+      API_ENDPOINT: http://10.0.0.10:31110
+      CLIENT_ENDPOINT: http://10.0.0.10:31111
+      SPOTIFY_PUBLIC: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      SPOTIFY_SECRET: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      CORS: i-want-a-security-vulnerability-and-want-to-allow-all-origins
+      LOG_LEVEL: warn
+  mongo:
+    container_name: mongo
+    image: mongo:6
+    volumes:
+      - ./db:/data/db
+    restart: unless-stopped
+
+  web:
+    image: yooooomi/your_spotify_client
+    restart: unless-stopped
+    ports:
+      - "31111:3000"
+    environment:
+      API_ENDPOINT: http://10.0.0.10:31110
