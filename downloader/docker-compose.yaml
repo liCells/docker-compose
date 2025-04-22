@@ -38,3 +38,10 @@ services:
       - ./config/aria2:/config
       - ~/Downloads/:/downloads
 
+  ariang:
+    image: p3terx/ariang
+    container_name: ariang
+    restart: unless-stopped
+    ports:
+      - "36880:6880"
+
