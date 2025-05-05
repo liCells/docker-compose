@@ -28,6 +28,9 @@
             - title: FreshRSS
               url: http://10.0.0.1:8082/
               icon: /assets/freshrss.svg
+            - title: Karakeep
+              url: http://10.0.0.10:43000/
+              icon: /assets/Karakeep.png
             - title: Dozzle
               url: http://10.0.0.10:30010/
               icon: /assets/dozzle.svg
